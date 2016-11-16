@@ -1,0 +1,22 @@
+{
+  "name": "yuan-sh",
+  "version": "0.0.1",
+  "description": "Simulate shell commands in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YounGoat/nodejs.yuan-sh.git"
+  },
+  "keywords": [
+    "shell"
+  ],
+  "author": "Triver YounGoat <youngoat@163.com> (http://youngoat.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YounGoat/nodejs.yuan-sh/issues"
+  },
+  "homepage": "https://github.com/YounGoat/nodejs.yuan-sh#readme"
+}
