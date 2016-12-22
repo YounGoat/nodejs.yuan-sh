@@ -30,6 +30,15 @@ CORE.isDir = function(pathname) {
 	return ret;
 };
 
+CORE.isRegularFile = function(pathname) {
+	var ret = false;
+	if (fs.existsSync(pathname)) {
+		var stats = fs.lstatSync(pathname);
+		ret = stats.isFile();
+	}
+	return ret;
+};
+
 CORE.BASH_AVAILABLE = (
 	[ 'darwin', 'linux' ].indexOf(os.platform()) >= 0
 );

@@ -66,7 +66,7 @@ module.exports = function(source, target, options) {
 			workingDir = sourceRealpath;
 		}
 		else {
-			cmd = yuan.string.format('zip -r "%s" "%s"', targetRealpath, sourceRealpath);
+			cmd = yuan.string.format('zip -r "%s" "%s"', targetRealpath, path.basename(sourceRealpath));
 			workingDir = path.dirname(sourceRealpath);
 		}
 

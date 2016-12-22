@@ -13,6 +13,7 @@ var MODULE_REQUIRE
 
 var CORE = require('../core');
 var rm = require('./rm');
+var unzip = require('./unzip');
 
 module.exports = function(source, options) {
 	options = CORE.expand({
@@ -35,7 +36,18 @@ module.exports = function(source, options) {
 	}
 
 	if (!fs.existsSync(source)) throw [ 1, 'Source directory does not exist: ' + source ];
-	if (!CORE.isDir(source)) throw [ 2, 'It is not a directory: ' + source ];
+	if (!CORE.isDir(source)) {
+		// 自适应解压缩。
+		switch (path.extname(source)) {
+			case '.zip':
+				var targetDir = path.dirname(source);
+				return unzip(source, targetDir, {
+					overwrite: options.overwrite,
+					keepSource: options.keepSource
+				});
+		}
+		throw [ 2, 'It is not a directory or supported packed file: ' + source ];
+	}
 
 	var items = fs.readdirSync(source);
 

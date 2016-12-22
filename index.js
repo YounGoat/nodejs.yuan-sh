@@ -51,9 +51,9 @@ module.exports = function(name /*, args */) {
 		}
 
 		return {
-			status	   : status,
-			error		: error,
-			errorName	: name,
+			status       : status,
+			error        : error,
+			errorName    : name,
 			errorMessage : message,
 			errorStack   : stack
 		}
