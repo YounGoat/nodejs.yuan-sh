@@ -16,3 +16,9 @@ By far, 10 commands supported by yuan-sh:
 *	rm
 *	unzip
 *	zip
+
+##	How to run?
+
+```javascript
+
+```

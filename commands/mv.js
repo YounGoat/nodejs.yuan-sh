@@ -13,6 +13,7 @@ var MODULE_REQUIRE
 
 var CORE = require('../core');
 var mkdir = require('./mkdir');
+var rm = require('./rm');
 
 module.exports = function(source, target, options) {
 	options = CORE.expand({
@@ -44,8 +45,13 @@ module.exports = function(source, target, options) {
 	}
 
 	var targetRealpath = path.join(targetDir, basename);
-	if (fs.existsSync(targetRealpath) && !options.overwrite) {
-		throw [ 4, 'Target already exists: ' + targetRealpath ];
+	if (fs.existsSync(targetRealpath)) {
+		if (!options.overwrite) {
+			throw [ 4, 'Target already exists: ' + targetRealpath ];
+		}
+		else {
+			rm(targetRealpath);
+		}
 	}
 
 	fs.renameSync(source, targetRealpath);
