@@ -1,6 +1,6 @@
 {
     "name": "yuan-sh",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Simulate shell commands in Node.js",
     "main": "index.js",
     "scripts": {

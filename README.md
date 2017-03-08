@@ -110,7 +110,7 @@ var options = {
 	// DEFAULT false
 	keepSource: false
 }
-var ret = ysh('extract', '/path/of/source');
+var ret = ysh('extract', '/path/of/source', options);
 ```
 
 Predefined error status:  
@@ -142,7 +142,7 @@ var options = {
 	// DEFAULT 0, means no limit
 	depth: 0
 };
-var ret = ysh('find', '/path/of/root');
+var ret = ysh('find', '/path/of/root', options);
 
 if (ret.status == 0) {
 	// If success, ret.data will be an array of string.
@@ -170,7 +170,7 @@ var options = {
 	// DEFAULT hex
 	encoding: 'hex'
 };
-var ret = ysh('md5', '/path/to/file');
+var ret = ysh('md5', '/path/to/file', options);
 
 if (ret.status == 0) {
 	// The MD5 digest of the file content.
@@ -209,7 +209,7 @@ var options = {
 	// DEFAULT false
 	overwrite: false
 };
-var ret = ysh('mv', '/path/of/source', '/path/of/target');
+var ret = ysh('mv', '/path/of/source', '/path/of/target', options);
 ```
 
 Predefined error status:  
@@ -227,7 +227,7 @@ var options = {
 	// DEFAULT false
 	force: false
 }
-ysh('rm', '/path/of/source');
+ysh('rm', '/path/of/source', options);
 ```
 
 Predefined error status:  
@@ -255,7 +255,7 @@ var options = {
 	// DEFAULT true
 	keepSource: true
 }
-var ret = ysh('unzip', '/path/to/zip', '/path/of/target');
+var ret = ysh('unzip', '/path/to/zip', '/path/of/target', options);
 ```
 
 Predefined error status:  
@@ -281,7 +281,7 @@ var options = {
 	// DEFAULT false
 	unshell: false
 }
-var ret = ysh('zip', '/path/of/source', '/path/of/target');
+var ret = ysh('zip', '/path/of/source', '/path/of/target', options);
 ```
 
 Predefined error status:  
