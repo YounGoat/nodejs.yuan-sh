@@ -37,11 +37,7 @@ module.exports = function(source, target, options) {
 		overwrite: false,
 
 		// 默认：保留原始压缩文件。
-		keepSource: true,
-
-		// 此参数只有当源路径代表目录时有效。
-		// 若设为 true，则将源目录下的内容直接放到压缩包根目录下，而抛弃源目录本身。
-		unshell: false
+		keepSource: true
 
 	}, options);
 
