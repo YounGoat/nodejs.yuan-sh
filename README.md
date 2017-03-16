@@ -49,7 +49,7 @@ Otherwise, the returned value will be like:
 
 ##	Supported Commands
 
-<a name="clear-dir">
+<a name="clear-dir"></a>
 ###	clear-dir
 
 To remove all files and folders recursively below the specified directory.
@@ -62,7 +62,7 @@ Predefined error status:
 *	1 = Target does not exist
 *	2 = Target is not a valid directory
 
-<a name="cp">
+<a name="cp"></a>
 ###	cp = Copy file or folder
 
 To copy file or folder to new location.
@@ -93,7 +93,7 @@ Predefined error status:
 
 ATTENTION: If the target has already exist and it is a folder, ``ysh('mv', source, target)`` will overwrite (remove before copying) the target instead of create something below target.
 
-<a name="extract">
+<a name="extract"></a>
 ###	extract = Move sub files / folders from a directory / packed file to parent directory
 
 ```javascript
@@ -118,7 +118,7 @@ Predefined error status:
 *	2 = It is not a directory or supported packed file
 *	3 = Target item exists already
 
-<a name="find">
+<a name="find"></a>
 ###	find = Find files / folders
 
 ```javascript
@@ -157,7 +157,7 @@ Predefined error status:
 *	1 = Source directory does not exist
 *	2 = It is not a directory
 
-<a name="md5">
+<a name="md5"></a>
 ###	md5 = Create MD5 digest
 
 ```javascript
@@ -183,7 +183,7 @@ Predefined error status:
 *	2 = It is a directory while a regular file expected
 *	3 = options.salt SHOULD be a buffer or string (utf8-encoded)
 
-<a name="mkdir">
+<a name="mkdir"></a>
 ###	mkdir = Create directory
 
 ```javascript
@@ -192,7 +192,7 @@ ysh('mkdir', '/path/of/dir');
 
 If the target exists, do nothing even if it is a file (not folder).
 
-<a name="mv">
+<a name="mv"></a>
 ###	mv = Move file or folder to new location
 
 ```javascript
@@ -218,7 +218,7 @@ Predefined error status:
 *	3 = Failed to create target directory
 *	4 = Target already exists
 
-<a name="rm">
+<a name="rm"></a>
 ###	rm = Remove file / folder recursively
 
 ```javascript
@@ -234,7 +234,7 @@ Predefined error status:
 *	1 = Target does not exist
 *	2 = Target is an directory and not empty
 
-<a name="unzip">
+<a name="unzip"></a>
 ###	unzip = Unzip packed file
 
 ```javascript
@@ -263,7 +263,7 @@ Predefined error status:
 * 	2 = Target directory does not exist
 *	3 = Bash shell unavailable, failed to invoke system command "unzip"
 
-<a name="zip">
+<a name="zip"></a>
 ###	zip = Create zip file
 
 ```javascript
