@@ -43,4 +43,8 @@ CORE.BASH_AVAILABLE = (
 	[ 'darwin', 'linux' ].indexOf(os.platform()) >= 0
 );
 
+CORE.CMD_AVAILABLE = (
+	'win32' == os.platform()
+);
+
 module.exports = CORE;
