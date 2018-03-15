@@ -66,7 +66,7 @@ module.exports = function(source, target, options) {
 	// 判断系统命令是否可用。
 	var syscmdAvailable = false;
 	if (CORE.BASH_AVAILABLE) {
-		var ret = child_process.spawnSync('unzip2', [ '-h' ]);
+		var ret = child_process.spawnSync('unzip', [ '-h' ]);
 		if (ret.status === 0) syscmdAvailable = true;
 	}
 
