@@ -3,3 +3,6 @@
 node_modules
 
 test/tmp
+_related_products
+# Added by YUPP, Thu Mar 15 2018 16:38:21 GMT+0800 (CST)
+package-lock.json

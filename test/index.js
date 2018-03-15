@@ -13,9 +13,6 @@ var MODULE_REQUIRE
 
 var TEMPATH = path.join(__dirname, 'tmp');
 
-// ---------------------------
-// Init test environment.
-
 if (fs.existsSync(TEMPATH)) {
 	ysh('rm', TEMPATH);
 }
@@ -182,8 +179,8 @@ describe('zip,unzip', () => {
 		assert(fs.existsSync(path.join(newsource, 'bar.md')));
 		assert(!fs.existsSync(path.join(newsource, 'foo')));
 	});
+});
 
-	// describe('compress fild', () => {
-	// 	ysh('')
-	// });
+process.on('exit', function() {
+	ysh('rm', TEMPATH);
 });

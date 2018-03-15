@@ -1,23 +1,29 @@
 #	YSH, Yuan Shell
 
-*ysh* or *yuan-sh* means Yuan Sh(ell). It is a Node.js module.
+##	Description
 
-*ysh* makes it easier to run a set of commands and obtain the result (if needed) in Node.js, as if you are interacting with CLI shell like *bash*.
+__ysh__ or __yuan-sh__ means Yuan Sh(ell). It is a Node.js module.
 
-By far, 10 commands supported by *ysh*:
+__ysh__ makes it easier to run a set of commands and obtain the result (if needed) in Node.js, as if you are interacting with CLI shell like *bash*.
 
-*	[clear-dir](#clear-dir)
-*	[cp](#cp)
-*	[extract](#extract)
-*	[find](#find)
-*	[md5](#md5)
-*	[mkdir](#mkdir)
-*	[mv](#mv)
-*	[rm](#rm)
-*	[unzip](#unzip)
-*	[zip](#zip)
+##	ToC
 
-##	How to run?
+*	[How to Run?](#how-to-run)
+*	[Supported Commands](#supported-commands)
+	*	[clear-dir](#clear-dir)
+	*	[cp](#cp)
+	*	[extract](#extract)
+	*	[find](#find)
+	*	[md5](#md5)
+	*	[mkdir](#mkdir)
+	*	[mv](#mv)
+	*	[rm](#rm)
+	*	[unzip](#unzip)
+	*	[zip](#zip)
+*	[CHANGE LOG](./CHANGELOG.md)
+*	[Homepage](https://github.com/YounGoat/nodejs.yuan-sh)
+	
+##	How to Run?
 
 ```javascript
 // Require YSH module.
@@ -49,7 +55,8 @@ Otherwise, the returned value will be like:
 
 ##	Supported Commands
 
-<a name="clear-dir"></a>
+By far, 10 commands supported by __ysh__.
+
 ###	clear-dir
 
 To remove all files and folders recursively below the specified directory.
@@ -62,8 +69,7 @@ Predefined error status:
 *	1 = Target does not exist
 *	2 = Target is not a valid directory
 
-<a name="cp"></a>
-###	cp = Copy file or folder
+###	cp
 
 To copy file or folder to new location.
 
@@ -93,8 +99,9 @@ Predefined error status:
 
 ATTENTION: If the target has already exist and it is a folder, ``ysh('mv', source, target)`` will overwrite (remove before copying) the target instead of create something below target.
 
-<a name="extract"></a>
-###	extract = Move sub files / folders from a directory / packed file to parent directory
+###	extract
+
+Move sub files / folders from a directory / packed file to parent directory.
 
 ```javascript
 var options = {
@@ -118,8 +125,9 @@ Predefined error status:
 *	2 = It is not a directory or supported packed file
 *	3 = Target item exists already
 
-<a name="find"></a>
-###	find = Find files / folders
+###	find
+
+Find files / folders.
 
 ```javascript
 var options = {
@@ -157,8 +165,9 @@ Predefined error status:
 *	1 = Source directory does not exist
 *	2 = It is not a directory
 
-<a name="md5"></a>
-###	md5 = Create MD5 digest
+###	md5
+
+Create MD5 digest.
 
 ```javascript
 var options = {
@@ -183,8 +192,9 @@ Predefined error status:
 *	2 = It is a directory while a regular file expected
 *	3 = options.salt SHOULD be a buffer or string (utf8-encoded)
 
-<a name="mkdir"></a>
-###	mkdir = Create directory
+###	mkdir
+
+Create directory.
 
 ```javascript
 ysh('mkdir', '/path/of/dir');
@@ -192,8 +202,9 @@ ysh('mkdir', '/path/of/dir');
 
 If the target exists, do nothing even if it is a file (not folder).
 
-<a name="mv"></a>
-###	mv = Move file or folder to new location
+###	mv
+
+Move file or folder to new location.
 
 ```javascript
 var options = {
@@ -218,8 +229,9 @@ Predefined error status:
 *	3 = Failed to create target directory
 *	4 = Target already exists
 
-<a name="rm"></a>
-###	rm = Remove file / folder recursively
+###	rm
+
+Remove file / folder recursively
 
 ```javascript
 var options = {
@@ -234,8 +246,9 @@ Predefined error status:
 *	1 = Target does not exist
 *	2 = Target is an directory and not empty
 
-<a name="unzip"></a>
-###	unzip = Unzip packed file
+###	unzip
+
+Unzip .zip file.
 
 ```javascript
 var options = {
@@ -263,8 +276,9 @@ Predefined error status:
 * 	2 = Target directory does not exist
 *	3 = Bash shell unavailable, failed to invoke system command "unzip"
 
-<a name="zip"></a>
-###	zip = Create zip file
+###	zip
+
+Create zip file.
 
 ```javascript
 var options = {

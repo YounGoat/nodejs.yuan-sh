@@ -9,7 +9,7 @@ var MODULE_REQUIRE
 	, child_process = require('child_process')
 	, fs = require('fs')
 	, path = require('path')
-	, archiver = require('archiver')
+	, AdmZip = require('adm-zip')
 	, yuan = require('yuan')
 	;
 
@@ -24,7 +24,7 @@ var cp = require('./cp');
  */
 module.exports = function(source, target, options) {
 	options = CORE.expand({
-		// 如果目的地容器目录（压缩文件所在目录）不存在，更否创建该目录。
+		// 如果目的地容器目录不存在，更否创建该目录。
 		createDir: true,
 
 		// 此参数不可设定，只是用于解释此命令的行为模式。
@@ -55,20 +55,30 @@ module.exports = function(source, target, options) {
 	}
 
 	// 目标路径已存在，且允许清场。
-	if (fs.existsSync(targetRealpath)) {
-		if (options.clear) rm(targetRealpath);
-	}
-	// 强制创建目录。
-	mkdir(targetRealpath);
+	if (options.clear) {
+		// 删除。
+		rm(targetRealpath);
 
+		// 重建目录。
+		mkdir(targetRealpath);
+	}	
+
+	// 判断系统命令是否可用。
+	var syscmdAvailable = false;
 	if (CORE.BASH_AVAILABLE) {
+		var ret = child_process.spawnSync('unzip2', [ '-h' ]);
+		if (ret.status === 0) syscmdAvailable = true;
+	}
+
+	if (syscmdAvailable) {
 		var cmd, cmdOptions = '';
 		cmdOptions += options.overwrite ? 'o' : 'n';
 		cmd = yuan.string.format('unzip -%s -d "%s" "%s"', cmdOptions, targetRealpath, sourceRealpath);
 		child_process.execSync(cmd);
 	}
 	else {
-		throw [ 3, 'Bash shell unavailable, failed to invoke system command "unzip".'];
+		new AdmZip(sourceRealpath).extractAllTo(targetRealpath, options.overwrite);
+		// throw [ 3, 'Bash shell unavailable, failed to invoke system command "unzip".'];
 	}
 
 	if (!options.keepSource) {
