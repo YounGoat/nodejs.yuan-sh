@@ -37,6 +37,12 @@ var init = function(name) {
 	// ./root/foo/bar
 	fs.mkdirSync(path.join(root, 'foo', 'bar'));
 
+	// ./root/foo/.bar
+	fs.mkdirSync(path.join(root, 'foo', '.bar'));
+
+	// ./root/foo/.bar/quz.md
+	fs.writeFileSync(path.join(root, 'foo', '.bar', 'quz.md'), 'helloworld');
+
 	// ./root/foo/bar/quz.md
 	fs.writeFileSync(path.join(root, 'foo', 'bar', 'quz.md'), 'helloworld');
 
@@ -104,7 +110,7 @@ describe('find', () => {
 
 	var ret = ysh('find', root);
 	it('all descendant found', function() {
-		assert.equal(5, ret.response.length);
+		assert.equal(7, ret.response.length);
 	});
 });
 
@@ -182,5 +188,5 @@ describe('zip,unzip', () => {
 });
 
 process.on('exit', function() {
-	ysh('rm', TEMPATH);
+	// ysh('rm', TEMPATH);
 });

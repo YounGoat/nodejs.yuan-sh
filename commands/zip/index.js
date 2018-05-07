@@ -9,13 +9,14 @@ var MODULE_REQUIRE
 	, child_process = require('child_process')
 	, fs = require('fs')
 	, path = require('path')
-	, archiver = require('archiver')
+	// , archiver = require('archiver')
+	, AdmZip = require('adm-zip')
 	, yuan = require('yuan')
 	;
 
-var CORE = require('../core');
-var rm = require('./rm');
-var mkdir = require('./mkdir');
+var CORE = require('../../core');
+var rm = require('../rm');
+var mkdir = require('../mkdir');
 
 /**
  * @param {String} source
@@ -58,11 +59,11 @@ module.exports = function(source, target, options) {
 		if (options.createDir) mkdir(targetDir);
 	}
 
-	if (CORE.BASH_AVAILABLE) {
+	if (0 && ORE.BASH_AVAILABLE) {
 		var cmd, workingDir;
 
 		if (CORE.isDir(sourceRealpath) && options.unshell) {
-			cmd = yuan.string.format('zip -r "%s" *', targetRealpath);
+			cmd = yuan.string.format('shopt -s dotglob && zip -r "%s" *', targetRealpath);
 			workingDir = sourceRealpath;
 		}
 		else {
@@ -73,34 +74,48 @@ module.exports = function(source, target, options) {
 		child_process.execSync(cmd, { cwd: workingDir });
 	}
 	else {
-		var archive = archiver.create('zip');
-		archive.pipe(fs.createWriteStream(targetRealpath));
+		// var archive = archiver.create('zip');
+		// archive.pipe(fs.createWriteStream(targetRealpath));
 
-		var mapping;
+		// var mapping;
+		// if (CORE.isDir(sourceRealpath)) {
+		// 	if (options.unshell) {
+		// 		mapping = {
+		// 			src: '**',
+		// 			cwd: sourceRealpath
+		// 		};
+		// 	}
+		// 	else {
+		// 		mapping = {
+		// 			src: path.join(path.basename(sourceRealpath), '**'),
+		// 			cwd: path.dirname(sourceRealpath)
+		// 		};
+		// 	}
+
+		// }
+		// else {
+		// 	mapping = {
+		// 		src: sourceRealpath,
+		// 		flatten: path.dirname(sourceRealpath)
+		// 	};
+		// }
+		// CORE.expand(mapping, { expand: 1, dot: true });
+		// archive.bulk([ mapping ]);
+		// archive.finalize();
+
+		var zip = new AdmZip();
 		if (CORE.isDir(sourceRealpath)) {
 			if (options.unshell) {
-				mapping = {
-					src: '**',
-					cwd: sourceRealpath
-				};
+				zip.addLocalFolder(sourceRealpath, '.');
 			}
 			else {
-				mapping = {
-					src: path.join(path.basename(sourceRealpath), '**'),
-					cwd: path.dirname(sourceRealpath)
-				};
+				zip.addLocalFolder(sourceRealpath, path.basename(sourceRealpath));
 			}
-
 		}
 		else {
-			mapping = {
-				src: sourceRealpath,
-				flatten: path.dirname(sourceRealpath)
-			};
+			zip.addLocalFile(sourceRealpath);
 		}
-		CORE.expand(mapping, { expand: 1, dot: true });
-		archive.bulk([ mapping ]);
-		archive.finalize();
+		zip.writeZip(targetRealpath);
 
 		// throw [ 3, 'Bash shell unavailable, failed to invoke system command "zip".'];
 	}
