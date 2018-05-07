@@ -8,15 +8,14 @@
 var MODULE_REQUIRE
 	, child_process = require('child_process')
 	, fs = require('fs')
+	, os = require('os')
 	, path = require('path')
-	// , archiver = require('archiver')
-	, AdmZip = require('adm-zip')
 	, yuan = require('yuan')
 	;
 
-var CORE = require('../../core');
-var rm = require('../rm');
-var mkdir = require('../mkdir');
+var CORE = require('../core');
+var rm = require('./rm');
+var mkdir = require('./mkdir');
 
 /**
  * @param {String} source
@@ -59,7 +58,7 @@ module.exports = function(source, target, options) {
 		if (options.createDir) mkdir(targetDir);
 	}
 
-	if (0 && ORE.BASH_AVAILABLE) {
+	if (0 && CORE.BASH_AVAILABLE) {
 		var cmd, workingDir;
 
 		if (CORE.isDir(sourceRealpath) && options.unshell) {
@@ -73,36 +72,44 @@ module.exports = function(source, target, options) {
 
 		child_process.execSync(cmd, { cwd: workingDir });
 	}
+
+	// addLocalFolder() in adm-zip is unavailable in Windows.
+	// So, use archiver as replacement.
+
+	else if (os.platform() == 'win32') {
+		var archiver = require('archiver');		
+		var archive = archiver.create('zip');
+		archive.pipe(fs.createWriteStream(targetRealpath));
+
+		var mapping;
+		if (CORE.isDir(sourceRealpath)) {
+			if (options.unshell) {
+				mapping = {
+					src: '**',
+					cwd: sourceRealpath
+				};
+			}
+			else {
+				mapping = {
+					src: path.join(path.basename(sourceRealpath), '**'),
+					cwd: path.dirname(sourceRealpath)
+				};
+			}
+
+		}
+		else {
+			mapping = {
+				src: sourceRealpath,
+				flatten: path.dirname(sourceRealpath)
+			};
+		}
+		CORE.expand(mapping, { expand: 1, dot: true });
+		archive.bulk([ mapping ]);
+		archive.finalize();
+	}
+
 	else {
-		// var archive = archiver.create('zip');
-		// archive.pipe(fs.createWriteStream(targetRealpath));
-
-		// var mapping;
-		// if (CORE.isDir(sourceRealpath)) {
-		// 	if (options.unshell) {
-		// 		mapping = {
-		// 			src: '**',
-		// 			cwd: sourceRealpath
-		// 		};
-		// 	}
-		// 	else {
-		// 		mapping = {
-		// 			src: path.join(path.basename(sourceRealpath), '**'),
-		// 			cwd: path.dirname(sourceRealpath)
-		// 		};
-		// 	}
-
-		// }
-		// else {
-		// 	mapping = {
-		// 		src: sourceRealpath,
-		// 		flatten: path.dirname(sourceRealpath)
-		// 	};
-		// }
-		// CORE.expand(mapping, { expand: 1, dot: true });
-		// archive.bulk([ mapping ]);
-		// archive.finalize();
-
+		var AdmZip = require('adm-zip');	
 		var zip = new AdmZip();
 		if (CORE.isDir(sourceRealpath)) {
 			if (options.unshell) {
