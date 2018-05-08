@@ -16,6 +16,7 @@ var MODULE_REQUIRE
 var CORE = require('../core');
 var rm = require('./rm');
 var mkdir = require('./mkdir');
+var find = require('./find');
 
 /**
  * @param {String} source
@@ -58,7 +59,7 @@ module.exports = function(source, target, options) {
 		if (options.createDir) mkdir(targetDir);
 	}
 
-	if (0 && CORE.BASH_AVAILABLE) {
+	if (CORE.BASH_AVAILABLE) {
 		var cmd, workingDir;
 
 		if (CORE.isDir(sourceRealpath) && options.unshell) {
@@ -75,37 +76,70 @@ module.exports = function(source, target, options) {
 
 	// addLocalFolder() in adm-zip is unavailable in Windows.
 	// So, use archiver as replacement.
+	// Unfortunately, the following code snippet is not fully sychronous in Windows.
 
+	// else if (os.platform() == 'win32') {
+	// 	var archiver = require('archiver');		
+	// 	var archive = archiver.create('zip');
+	// 	archive.pipe(fs.createWriteStream(targetRealpath));
+
+	// 	var mapping;
+	// 	if (CORE.isDir(sourceRealpath)) {
+	// 		if (options.unshell) {
+	// 			mapping = {
+	// 				src: '**',
+	// 				cwd: sourceRealpath
+	// 			};
+	// 		}
+	// 		else {
+	// 			mapping = {
+	// 				src: path.join(path.basename(sourceRealpath), '**'),
+	// 				cwd: path.dirname(sourceRealpath)
+	// 			};
+	// 		}
+
+	// 	}
+	// 	else {
+	// 		mapping = {
+	// 			src: sourceRealpath,
+	// 			flatten: path.dirname(sourceRealpath)
+	// 		};
+	// 	}
+	// 	CORE.expand(mapping, { expand: 1, dot: true });
+	// 	archive.bulk([ mapping ]);
+	// 	archive.finalize();
+	// }
+
+	// Let's turn round to adm-zip.
 	else if (os.platform() == 'win32') {
-		var archiver = require('archiver');		
-		var archive = archiver.create('zip');
-		archive.pipe(fs.createWriteStream(targetRealpath));
-
-		var mapping;
+		var AdmZip = require('adm-zip');	
+		var zip = new AdmZip();
 		if (CORE.isDir(sourceRealpath)) {
-			if (options.unshell) {
-				mapping = {
-					src: '**',
-					cwd: sourceRealpath
-				};
+			var items = find(sourceRealpath);
+			var basename = path.basename(sourceRealpath);
+			for (var i = 0; i < items.length; i++) {
+				var name = items[i];
+				var pathname = path.join(sourceRealpath, name);
+				var entryname = name.replace('\\', '/');
+				if (!options.unshell) {
+					entryname = basename + '/' + entryname;
+				}
+				var data = '';
+				if (CORE.isDir(pathname)) {
+					entryname += '/';
+				}
+				else {
+					data = fs.readFileSync(pathname);
+				}
+				var comment = '';
+				var attr = 0;
+				zip.addFile(entryname, data, comment, attr);
 			}
-			else {
-				mapping = {
-					src: path.join(path.basename(sourceRealpath), '**'),
-					cwd: path.dirname(sourceRealpath)
-				};
-			}
-
 		}
 		else {
-			mapping = {
-				src: sourceRealpath,
-				flatten: path.dirname(sourceRealpath)
-			};
+			zip.addLocalFile(sourceRealpath);
 		}
-		CORE.expand(mapping, { expand: 1, dot: true });
-		archive.bulk([ mapping ]);
-		archive.finalize();
+		zip.writeZip(targetRealpath);
 	}
 
 	else {
@@ -113,7 +147,7 @@ module.exports = function(source, target, options) {
 		var zip = new AdmZip();
 		if (CORE.isDir(sourceRealpath)) {
 			if (options.unshell) {
-				zip.addLocalFolder(sourceRealpath, '.');
+				zip.addLocalFolder(sourceRealpath, '');
 			}
 			else {
 				zip.addLocalFolder(sourceRealpath, path.basename(sourceRealpath));
