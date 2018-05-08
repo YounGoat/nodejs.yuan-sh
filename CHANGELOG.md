@@ -2,7 +2,7 @@
 
 Notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning 2.0.0](http://semver.org/).
 
-##  [0.3.2] - May 8th, 2018
+##  [0.3.3] - May 8th, 2018
 
 *   God damm it. I turned round to __adm-zip__ again. I have to depend on verion 0.4.7 because in version 0.4.9, the method `extractAll()` used in `ysh('unzip', ...)` does not work properly in Windows. However, a bug in `addLocalFolder()` already fixed in 0.4.9 still exists in 0.4.7. So, I have to invoke `addFile()` one by one for each items.
 

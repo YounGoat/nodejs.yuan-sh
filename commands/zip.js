@@ -120,7 +120,7 @@ module.exports = function(source, target, options) {
 			for (var i = 0; i < items.length; i++) {
 				var name = items[i];
 				var pathname = path.join(sourceRealpath, name);
-				var entryname = name.replace('\\', '/');
+				var entryname = name.split('\\').join('/');
 				if (!options.unshell) {
 					entryname = basename + '/' + entryname;
 				}
