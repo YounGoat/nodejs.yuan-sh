@@ -74,7 +74,7 @@ module.exports = function(source, target, options) {
 		var cmd, cmdOptions = '';
 		cmdOptions += options.overwrite ? 'o' : 'n';
 		cmd = yuan.string.format('unzip -%s -d "%s" "%s"', cmdOptions, targetRealpath, sourceRealpath);
-		child_process.execSync(cmd);
+		child_process.execSync(cmd, { stdio: 'ignore' });
 	}
 	else {
 		new AdmZip(sourceRealpath).extractAllTo(targetRealpath, options.overwrite);

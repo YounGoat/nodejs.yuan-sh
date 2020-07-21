@@ -14,6 +14,7 @@ var MODULE_REQUIRE
 var CORE = require('../core');
 var mkdir = require('./mkdir');
 var rm = require('./rm');
+var cp = require('./cp');
 
 module.exports = function(source, target, options) {
 	options = CORE.expand({
@@ -54,5 +55,15 @@ module.exports = function(source, target, options) {
 		}
 	}
 
-	fs.renameSync(source, targetRealpath);
+	try {
+		fs.renameSync(source, targetRealpath);    
+	} catch (error) {
+		if (error.code && error.code == 'EXDEV') {
+			cp(source, targetRealpath, { overwrite: true });
+			rm(source);
+		}
+		else {
+			throw error;
+		}
+	}
 };

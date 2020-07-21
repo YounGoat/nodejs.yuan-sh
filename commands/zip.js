@@ -71,7 +71,7 @@ module.exports = function(source, target, options) {
 			workingDir = path.dirname(sourceRealpath);
 		}
 
-		child_process.execSync(cmd, { cwd: workingDir });
+		child_process.execSync(cmd, { cwd: workingDir, stdio: 'ignore' });
 	}
 
 	// addLocalFolder() in adm-zip is unavailable in Windows.
